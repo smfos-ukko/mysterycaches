@@ -1,0 +1,32 @@
+body {
+    min-height: 100vh;
+    background-color: black;
+    margin: 0;
+    color: white;
+}
+#puzzleContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.puzzleRows {
+    display: grid;
+}
+.puzzleRow {
+    display: flex;
+    align-items: center;
+}
+.puzzleRow * {
+    padding: 0 10px;
+}
+input {
+    min-height: 30px;
+}
+.puzzleRow {
+    padding: 10px;
+}
+@media (min-width: 800px) {
+    #puzzleContainer {
+        margin: 50px;
+    }
+}
