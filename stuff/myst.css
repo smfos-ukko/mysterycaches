@@ -9,8 +9,9 @@ body {
     flex-direction: column;
     align-items: center;
 }
-.puzzleRows {
+#puzzleRows {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
 }
 .puzzleRow {
     display: flex;
