@@ -1,6 +1,7 @@
 const params = new URLSearchParams(window.location.search);
 const page = params.get('page');
 const puzzleContainer = document.getElementById('puzzleContainer');
+const finalButton = document.getElementById('finalButton');
 const replies = {};
 
 fetch(`stuff/${page}/puzzle.html`)
@@ -46,3 +47,7 @@ fetch(`stuff/${page}/puzzle.txt`)
     }).catch((e) => {
         console.log("txt error: ", e);
     });
+
+finalButton.addEventListener('click', function() {
+    let finalGuess = document.getElementById('finalText').text();
+});
