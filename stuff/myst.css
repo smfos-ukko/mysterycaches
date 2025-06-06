@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Rochester&display=swap');
+h1 {
+    font-family: "Rochester", cursive;
+    font-weight: 400;
+    font-style: italic;
+    font-size: xxx-large;
+}
 body {
     min-height: 100vh;
     background-color: black;
@@ -21,15 +28,29 @@ body {
 .puzzleRow {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 .puzzleRow * {
     padding: 0 10px;
 }
+.stacked {
+    display: flex;
+    flex-direction: column;
+}
+#finalButton {
+    margin: 10px;
+    width: 60px;
+    height: 35px;
+}
 input {
     min-height: 30px;
+    width: 120px;
 }
 .puzzleRow {
     padding: 10px;
+}
+.stacked span {
+    padding-right: 0;
 }
 @media (min-width: 800px) {
     #puzzleContainer {
