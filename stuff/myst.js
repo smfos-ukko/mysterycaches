@@ -1,6 +1,7 @@
 const params = new URLSearchParams(window.location.search);
 const page = params.get('page');
 const puzzleContainer = document.getElementById('puzzleContainer');
+const replies = {};
 
 fetch(`stuff/${page}/puzzle.html`)
     .then(response => {
@@ -24,3 +25,24 @@ fetch(`stuff/${page}/puzzle.html`)
         console.error('HTML haku ei onnistunut', error);
     });
 
+fetch(`stuff/${page}/puzzle.txt`)
+    .then(res => res.text())
+    .then(text => {
+        const lines = text.split(/\r?\n/);
+        let currentKey = null;
+        lines.forEach(line => {
+            if (line.startsWith('#')) {
+                currentKey = line.slice(1).toLowerCase();
+                replies[currentKey] = [];
+            } else if (line && currentKey) {
+                if (currentKey === 'taunts') {
+                    const [cue, taunt] = line.split('%');
+                    replies[currentKey].push({ cue: cue.trim(), taunt: taunt.trim() });
+                } else {
+                    replies[currentKey].push(line);
+                }
+            }
+        })
+    }).catch((e) => {
+        console.log("txt error: ", e);
+    });

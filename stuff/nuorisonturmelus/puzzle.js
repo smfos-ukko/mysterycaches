@@ -42,14 +42,9 @@ let textChanged = (e) => {
         checkList[no] = 0;
     }
     if (checkList.every(num => num === 0) && flag == 0) {
-        document.getElementById('puzzleContainer').insertAdjacentHTML('beforeend', `
-            <h2>Milloin meillä?</h2>
-            <div id="finalSet">
-                <input type="text" id="finalText">  
-                <button id="finalButton">Vastaa</button>
-            </div>  
-        `);
+        document.getElementById('puzzleContainer').insertAdjacentHTML('beforeend', '<h2 id="finalQ">Milloin meillä?</h2>');
     }
+    document.getElementById('finalSet').style.visibility = 'visible';
     flag = 1;
 };
 
