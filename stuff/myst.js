@@ -1,16 +1,29 @@
 const params = new URLSearchParams(window.location.search);
 const page = params.get('page');
+const container = document.getElementById('container');
 const puzzleContainer = document.getElementById('puzzleContainer');
 const finalButton = document.getElementById('finalButton');
 const finalInput = document.getElementById('finalText');
 const replies = {};
+let answerPage = '';
+let coords = [];
 
 const CSSlink = document.createElement('link');
 CSSlink.rel = 'stylesheet';
 CSSlink.type = 'text/css';
 CSSlink.href = `stuff/${page}/puzzle.css`;
-console.log(CSSlink);
 document.getElementsByTagName('head')[0].appendChild(CSSlink); 
+
+fetch(`stuff/${page}/solved.html`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('verkkovirhe 0');
+        }
+        return response.text();
+    })
+    .then(data => {
+        answerPage = `<div id="answerPage">${data}</div>`;
+    });
 
 fetch(`stuff/${page}/puzzle.html`)
     .then(response => {
@@ -47,6 +60,9 @@ fetch(`stuff/${page}/puzzle.txt`)
                 if (currentKey === 'taunts') {
                     const [cue, taunt] = line.split('%');
                     replies[currentKey].push({ cue: cue.trim(), taunt: taunt.trim() });
+                } else if (currentKey === 'coords') {
+                    coords.push(line);
+                    console.log(line, coords);
                 } else {
                     replies[currentKey].push(line);
                 }
@@ -58,20 +74,38 @@ fetch(`stuff/${page}/puzzle.txt`)
     });
 
 const flashMessage = (t, et = '') => {
-    console.log(t);
+    const resLines = document.getElementsByClassName('response');
+    resLines[0].textContent = t;
+    resLines[1].textContent = et;
+    Array.from(resLines).forEach((rl) => {
+        rl.classList.remove('hiding');
+        rl.classList.add('revealed');
+    });
+    setTimeout(() => {
+        Array.from(resLines).forEach((rl) => {
+            rl.classList.remove('revealed');
+            rl.classList.add('hiding');
+        });
+    }, 3000);
+    setTimeout(() => {
+        Array.from(resLines).forEach((rl) => {
+            rl.textContent = '';
+        });
+    }, 4000);
 }
     
 const checkAnswer = () => {
     let finalGuess = finalInput.value.trim().toLowerCase();
+    const taunt = replies.taunts.find(tau => finalGuess.includes(tau.cue));
+    console.log(replies, taunt);
     if (replies.answer.some(ans => ans === finalGuess)) {
         puzzleSolved();
-    }
-    if (replies.closes.some(close => close === finalGuess)) {
+    } else if (replies.closes.some(close => close === finalGuess)) {
         flashMessage('Polttaa...');
-    }
-    const taunt = replies.taunts.find(tau => finalGuess.includes(tau.trigger));
-    if (taunt) {
-        flashMessage('taunts');
+    } else if (taunt) {
+        flashMessage('Polttaa...', taunt.taunt);
+    } else {
+        flashMessage('hmm...');
     }
 }
 
@@ -85,5 +119,21 @@ finalInput.addEventListener('keypress', function(e) {
 });
 
 const puzzleSolved = () => {
-    console.log("solved");
+    const all = container.querySelectorAll('*');
+    Array.from(all).forEach((e) => {
+        e.classList.add('hiding');
+    });
+    setTimeout(() => {
+        container.classList.add('hiding');
+   }, 1000);
+    setTimeout(() => {
+        container.innerHTML = answerPage;
+        let cd = document.createElement('div');
+        cd.innerHTML = `<a href="https://geocaching.com/map#?ll=${coords[0]}.${coords[1]}${coords[2]},${coords[3]}.${coords[4]}${coords[5]}" target="_blank">N${coords[0]}° ${coords[1]}.${coords[2]} E${coords[3]}° ${coords[4]}.${coords[5]}</a>`;
+        container.appendChild(cd);
+    }, 2000);
+    setTimeout(() => {
+        container.classList.remove('hiding');
+        container.classList.add('revealed');
+    }, 3000);
 }

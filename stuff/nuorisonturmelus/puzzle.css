@@ -24,8 +24,20 @@ input {
 .stacked span {
     padding-right: 0;
 }
+#answerPage {
+    display: flex;
+    justify-content: center;
+}
+#answerPage h1 {
+    text-align: center;
+}
 @media (min-width: 800px) {
     #puzzleRows {
         min-width: 740px;
+    }
+}
+@media (max-width: 799px) {
+    #answerPage h1 {
+        font-size: xx-large;
     }
 }
