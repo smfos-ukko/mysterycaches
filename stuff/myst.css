@@ -51,6 +51,14 @@ body {
     height: 30px;
     margin: 10px;
 }
+#coordinates {
+    text-align: center;
+}
+#coordinates a {
+    text-decoration: none;
+    color: rgb(142, 142, 53);
+    font-size: xx-large;
+}
 @media (min-width: 800px) {
     #container {
         margin: 50px;
@@ -60,6 +68,11 @@ body {
     }
     #finalQ {
         margin-top: 40px;
+    }
+}
+@media (max-width: 799px) {
+    #coordinates a {
+        font-size: 27px;
     }
 }
 /* Loader */
