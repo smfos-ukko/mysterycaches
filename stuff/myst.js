@@ -2,6 +2,7 @@ const params = new URLSearchParams(window.location.search);
 const page = params.get('page');
 const puzzleContainer = document.getElementById('puzzleContainer');
 const finalButton = document.getElementById('finalButton');
+const finalInput = document.getElementById('finalText');
 const replies = {};
 
 fetch(`stuff/${page}/puzzle.html`)
@@ -44,10 +45,38 @@ fetch(`stuff/${page}/puzzle.txt`)
                 }
             }
         })
+        flag = 1;
     }).catch((e) => {
         console.log("txt error: ", e);
     });
 
-finalButton.addEventListener('click', function() {
-    let finalGuess = document.getElementById('finalText').text();
+const flashMessage = (t, et = '') => {
+    console.log(t);
+}
+    
+const checkAnswer = () => {
+    let finalGuess = finalInput.value.trim().toLowerCase();
+    if (replies.answer.some(ans => ans === finalGuess)) {
+        puzzleSolved();
+    }
+    if (replies.closes.some(close => close === finalGuess)) {
+        flashMessage('Polttaa...');
+    }
+    const taunt = replies.taunts.find(tau => finalGuess.includes(tau.trigger));
+    if (taunt) {
+        flashMessage('taunts');
+    }
+}
+
+finalButton.addEventListener('click', checkAnswer);
+
+finalInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        checkAnswer();
+    }
 });
+
+const puzzleSolved = () => {
+    console.log("solved");
+}
