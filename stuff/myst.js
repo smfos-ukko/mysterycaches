@@ -5,6 +5,13 @@ const finalButton = document.getElementById('finalButton');
 const finalInput = document.getElementById('finalText');
 const replies = {};
 
+const CSSlink = document.createElement('link');
+CSSlink.rel = 'stylesheet';
+CSSlink.type = 'text/css';
+CSSlink.href = `stuff/${page}/puzzle.css`;
+console.log(CSSlink);
+document.getElementsByTagName('head')[0].appendChild(CSSlink); 
+
 fetch(`stuff/${page}/puzzle.html`)
     .then(response => {
         if (!response.ok) {

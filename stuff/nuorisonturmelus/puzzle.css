@@ -1,0 +1,31 @@
+#puzzleRows {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+}
+.puzzleRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.puzzleRow * {
+    padding: 0 10px;
+}
+.stacked {
+    display: flex;
+    flex-direction: column;
+}
+input {
+    min-height: 30px;
+    width: 120px;
+}
+.puzzleRow {
+    padding: 10px;
+}
+.stacked span {
+    padding-right: 0;
+}
+@media (min-width: 800px) {
+    #puzzleRows {
+        min-width: 740px;
+    }
+}

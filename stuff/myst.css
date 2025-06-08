@@ -21,22 +21,6 @@ body {
     align-items: center;
     visibility: hidden;
 }
-#puzzleRows {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-}
-.puzzleRow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.puzzleRow * {
-    padding: 0 10px;
-}
-.stacked {
-    display: flex;
-    flex-direction: column;
-}
 #finalButton {
     margin: 10px;
     width: 60px;
@@ -53,22 +37,9 @@ body {
     height: 30px;
     margin: 10px;
 }
-input {
-    min-height: 30px;
-    width: 120px;
-}
-.puzzleRow {
-    padding: 10px;
-}
-.stacked span {
-    padding-right: 0;
-}
 @media (min-width: 800px) {
     #puzzleContainer {
         margin: 50px;
-    }
-    #puzzleRows {
-        min-width: 740px;
     }
     #finalQ {
         margin-top: 40px;
