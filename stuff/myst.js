@@ -7,6 +7,7 @@ const finalInput = document.getElementById('finalText');
 const replies = {};
 let answerPage = '';
 let coords = [];
+let flag = 0;
 
 const CSSlink = document.createElement('link');
 CSSlink.rel = 'stylesheet';
@@ -40,8 +41,8 @@ fetch(`stuff/${page}/puzzle.html`)
         document.body.appendChild(js);
     })
     .then(() => {
-        puzzleContainer.style.visibility = 'visible';
-        document.getElementsByClassName('loader')[0].style.display = 'none';
+        flag++;
+        removeLoader();
     })
     .catch(error => {
         console.error('HTML haku ei onnistunut', error);
@@ -62,13 +63,14 @@ fetch(`stuff/${page}/puzzle.txt`)
                     replies[currentKey].push({ cue: cue.trim(), taunt: taunt.trim() });
                 } else if (currentKey === 'coords') {
                     coords.push(line);
-                    console.log(line, coords);
                 } else {
                     replies[currentKey].push(line);
                 }
             }
         })
-        flag = 1;
+    }).then(() => {
+        flag++;
+        removeLoader();
     }).catch((e) => {
         console.log("txt error: ", e);
     });
@@ -97,7 +99,6 @@ const flashMessage = (t, et = '') => {
 const checkAnswer = () => {
     let finalGuess = finalInput.value.trim().toLowerCase();
     const taunt = replies.taunts.find(tau => finalGuess.includes(tau.cue));
-    console.log(replies, taunt);
     if (replies.answer.some(ans => ans === finalGuess)) {
         puzzleSolved();
     } else if (replies.closes.some(close => close === finalGuess)) {
@@ -137,4 +138,13 @@ const puzzleSolved = () => {
         container.classList.remove('hiding');
         container.classList.add('revealed');
     }, 3000);
+}
+
+const removeLoader = () => {
+    console.log(flag);
+    if (flag < 2) return;
+    setTimeout(() => {
+        puzzleContainer.style.visibility = 'visible';
+        document.getElementsByClassName('loader')[0].style.display = 'none';   
+    }, 200);
 }
