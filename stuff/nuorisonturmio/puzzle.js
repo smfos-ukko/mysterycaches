@@ -29,7 +29,7 @@ let flag = 0;
 for (let i = 0; i < 8; i++) {
     document.getElementById('puzzleRows').insertAdjacentHTML('beforeend', `
         <div class="puzzleRow" data-index=${i}>
-            <img src="stuff/i${i}.png">
+            <img src="stuff/nuorisonturmio/i${i}.png">
             <div class="stacked">
                 <h2>${bids[i]}</h2>
                 <div>
@@ -54,7 +54,7 @@ let textChanged = (e) => {
         checkList[no] = 0;
     }
     if (checkList.every(num => num === 0) && flag == 0) {
-        document.getElementById('puzzleContainer').insertAdjacentHTML('beforeend', '<div id="appendix" class="hidden"><br/><img src="stuff/b19.png"><h2 id="finalQ">19?</h2></div>');
+        document.getElementById('puzzleContainer').insertAdjacentHTML('beforeend', '<div id="appendix" class="hidden"><br/><img src="stuff/nuorisonturmio/b19.png"><h2 id="finalQ">19?</h2></div>');
         let appendix = document.getElementById('appendix');
         appendix.classList.remove('hidden');
         appendix.classList.add('revealed');
