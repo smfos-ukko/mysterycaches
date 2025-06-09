@@ -51,8 +51,21 @@ body {
     height: 30px;
     margin: 10px;
 }
+#answerPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#answerPage h1 {
+    text-align: center;
+}
+#answerPage p {
+    max-width: 650px;
+}
 #coordinates {
     text-align: center;
+    margin-top: 35px;
 }
 #coordinates a {
     text-decoration: none;

@@ -27,13 +27,6 @@ input {
 #finalQ {
     text-align: center;
 }
-#answerPage {
-    display: flex;
-    justify-content: center;
-}
-#answerPage h1 {
-    text-align: center;
-}
 @media (min-width: 800px) {
     #puzzleRows {
         min-width: 740px;
