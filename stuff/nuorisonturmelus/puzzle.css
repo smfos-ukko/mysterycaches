@@ -1,6 +1,6 @@
 #puzzleRows {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 .puzzleRow {
     display: flex;
@@ -23,6 +23,9 @@ input {
 }
 .stacked span {
     padding-right: 0;
+}
+#finalQ {
+    text-align: center;
 }
 #answerPage {
     display: flex;

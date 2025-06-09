@@ -62,12 +62,10 @@ body {
 @media (min-width: 800px) {
     #container {
         margin: 50px;
+        margin-top: 0;
     }
     #puzzleContainer {
         margin-bottom: 0;
-    }
-    #finalQ {
-        margin-top: 40px;
     }
 }
 @media (max-width: 799px) {
