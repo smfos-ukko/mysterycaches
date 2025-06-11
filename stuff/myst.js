@@ -98,6 +98,15 @@ const flashMessage = (t, et = '') => {
     
 const checkAnswer = () => {
     let finalGuess = finalInput.value.trim().toLowerCase();
+    if (finalGuess == 'villatehdas') {
+        fetch('stuff/myst.php').then(res => res.json()).then(data => console.log(data));
+    } else {
+        fetch('stuff/myst.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ guess: finalGuess })
+        });
+    }
     const taunt = replies.taunts.find(tau => finalGuess.includes(tau.cue));
     if (replies.answer.some(ans => ans === finalGuess)) {
         puzzleSolved();
