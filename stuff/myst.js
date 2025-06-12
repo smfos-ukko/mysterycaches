@@ -99,7 +99,12 @@ const flashMessage = (t, et = '') => {
 const checkAnswer = () => {
     let finalGuess = finalInput.value.trim().toLowerCase();
     if (finalGuess == 'villatehdas') {
-        fetch('stuff/myst.php').then(res => res.json()).then(data => console.log(data));
+        fetch('stuff/myst.php').then(res => res.json()).then(data => {
+            data.sort((a, b) => b.attempts - a.attempts);
+            data.forEach(ent => {
+                console.log(`${ent.answer}: ${ent.attempts}`);
+            });
+        });
     } else {
         fetch('stuff/myst.php', {
             method: 'POST',
@@ -150,7 +155,6 @@ const puzzleSolved = () => {
 }
 
 const removeLoader = () => {
-    console.log(flag);
     if (flag < 2) return;
     setTimeout(() => {
         puzzleContainer.style.visibility = 'visible';

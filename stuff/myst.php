@@ -1,6 +1,6 @@
 <?php
     $db = new PDO('sqlite:myst.db');
-    $db->setAttribute(PDO::AFTER_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $db->exec("CREATE TABLE IF NOT EXISTS guesses (answer TEXT PRIMARY KEY, attempts INTEGER)");
     $guess = strtolower(trim($_POST['guess'] ?? ''));
     if ($guess) {
