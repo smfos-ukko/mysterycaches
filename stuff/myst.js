@@ -35,10 +35,9 @@ fetch(`stuff/${page}/puzzle.html`)
         console.error('HTML haku ei onnistunut', error);
     });
 
-const flashMessage = (t, et = '') => {
+const flashMessage = (t) => {
     const resLines = document.getElementsByClassName('response');
     resLines[0].textContent = t;
-    resLines[1].textContent = et;
     Array.from(resLines).forEach((rl) => {
         rl.classList.remove('hiding');
         rl.classList.add('revealed');
@@ -94,7 +93,7 @@ const puzzleSolved = () => {
         container.classList.add('hiding');
    }, 1000);
     setTimeout(() => {
-        container.innerHTML = answerPage;
+        container.innerHTML = `<div id="answerPage">${answerPage}</div>`;
         let cd = document.createElement('div');
         cd.setAttribute('id', 'coordinates');
         cd.innerHTML = `<a href="https://geocaching.com/map#?ll=${coords[0]}.${coords[1]}${coords[2]},${coords[3]}.${coords[4]}${coords[5]}" target="_blank">N${coords[0]}° ${coords[1]}.${coords[2]} E${coords[3]}° ${coords[4]}.${coords[5]}</a>`;

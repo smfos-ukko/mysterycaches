@@ -1,5 +1,5 @@
 <?php
-    $ans = [
+    /*$ans = [
         'stayman',
         'blackwood',
         'bergen',
@@ -8,6 +8,16 @@
         'splinter',
         'texas',
         'namyats'
+    ];*/
+    $ans = [
+        'a',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        ''
     ];
     $elms = '<div id="appendix" class="hidden"><br/><img src="stuff/nuorisonturmio/b19.png"><h2 id="finalQ">19?</h2></div>';
     $data = json_decode(file_get_contents('php://input'), true);

@@ -54,6 +54,7 @@ let textChanged = (e) => {
                 inputs.forEach((input, i) => {
                     lamp = input.nextElementSibling;
                     lamp.textContent = GREEN;
+                    input.disabled = true;
                 });
                 document.getElementById('puzzleContainer').insertAdjacentHTML('beforeend', data['elms']);
                 let appendix = document.getElementById('appendix');
@@ -75,22 +76,7 @@ let textChanged = (e) => {
                 });
             }
         });
-    }, timerInterval);
-    /*
-    if (bidGuess == answers[no]) {
-        lamp.textContent = GREEN;
-        checkList[no] = 1;
-    } else {
-        lamp.textContent = RED;
-        checkList[no] = 0;
-    }
-    if (checkList.every(num => num === 0) && flag == 0) {
-        document.getElementById('puzzleContainer').insertAdjacentHTML('beforeend', '<div id="appendix" class="hidden"><br/><img src="stuff/nuorisonturmio/b19.png"><h2 id="finalQ">19?</h2></div>');
-        let appendix = document.getElementById('appendix');
-        appendix.classList.remove('hidden');
-        appendix.classList.add('revealed');
-    }*/
-    
+    }, timerInterval);    
 };
 
 let subs = document.getElementsByClassName('subtext');

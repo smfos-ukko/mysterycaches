@@ -67,6 +67,12 @@ body {
 #answerPage p {
     max-width: 650px;
 }
+#answerPage blockquote {
+    font-family: "rochester", cursive;
+    font-size: x-large;
+    color: darkgrey;
+    max-width: 600px;
+}
 #coordinates {
     text-align: center;
     margin-top: 35px;
