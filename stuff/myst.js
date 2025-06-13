@@ -7,24 +7,12 @@ const finalInput = document.getElementById('finalText');
 const replies = {};
 let answerPage = '';
 let coords = [];
-let flag = 0;
 
 const CSSlink = document.createElement('link');
 CSSlink.rel = 'stylesheet';
 CSSlink.type = 'text/css';
 CSSlink.href = `stuff/${page}/puzzle.css`;
 document.getElementsByTagName('head')[0].appendChild(CSSlink); 
-
-fetch(`stuff/${page}/solved.html`)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('verkkovirhe 0');
-        }
-        return response.text();
-    })
-    .then(data => {
-        answerPage = `<div id="answerPage">${data}</div>`;
-    });
 
 fetch(`stuff/${page}/puzzle.html`)
     .then(response => {
@@ -41,38 +29,10 @@ fetch(`stuff/${page}/puzzle.html`)
         document.body.appendChild(js);
     })
     .then(() => {
-        flag++;
         removeLoader();
     })
     .catch(error => {
         console.error('HTML haku ei onnistunut', error);
-    });
-
-fetch(`stuff/${page}/puzzle.txt`)
-    .then(res => res.text())
-    .then(text => {
-        const lines = text.split(/\r?\n/);
-        let currentKey = null;
-        lines.forEach(line => {
-            if (line.startsWith('#')) {
-                currentKey = line.slice(1).toLowerCase();
-                replies[currentKey] = [];
-            } else if (line && currentKey) {
-                if (currentKey === 'taunts') {
-                    const [cue, taunt] = line.split('%');
-                    replies[currentKey].push({ cue: cue.trim(), taunt: taunt.trim() });
-                } else if (currentKey === 'coords') {
-                    coords.push(line);
-                } else {
-                    replies[currentKey].push(line);
-                }
-            }
-        })
-    }).then(() => {
-        flag++;
-        removeLoader();
-    }).catch((e) => {
-        console.log("txt error: ", e);
     });
 
 const flashMessage = (t, et = '') => {
@@ -98,30 +58,22 @@ const flashMessage = (t, et = '') => {
     
 const checkAnswer = () => {
     let finalGuess = finalInput.value.trim().toLowerCase();
-    if (finalGuess == 'villatehdas') {
-        fetch('stuff/myst.php').then(res => res.json()).then(data => {
-            data.sort((a, b) => b.attempts - a.attempts);
-            data.forEach(ent => {
-                console.log(`${ent.answer}: ${ent.attempts}`);
-            });
-        });
-    } else {
-        fetch('stuff/myst.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ guess: finalGuess })
-        });
-    }
-    const taunt = replies.taunts.find(tau => finalGuess.includes(tau.cue));
-    if (replies.answer.some(ans => ans === finalGuess)) {
-        puzzleSolved();
-    } else if (replies.closes.some(close => close === finalGuess)) {
-        flashMessage('Polttaa...');
-    } else if (taunt) {
-        flashMessage('Polttaa...', taunt.taunt);
-    } else {
-        flashMessage('hmm...');
-    }
+    fetch('stuff/myst.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ guess: finalGuess, page: page })
+    }).then (res => res.json())
+    .then(data => {
+        if (data['status'] === 'correct') {
+            answerPage = data['ap'];
+            coords = data['coords'];
+            puzzleSolved();
+        } else if (data['status'] === 'cheater') {
+            console.log(data);
+        } else {
+            flashMessage(data['message']);
+        }
+    });
 }
 
 finalButton.addEventListener('click', checkAnswer);
@@ -155,7 +107,6 @@ const puzzleSolved = () => {
 }
 
 const removeLoader = () => {
-    if (flag < 2) return;
     setTimeout(() => {
         puzzleContainer.style.visibility = 'visible';
         document.getElementsByClassName('loader')[0].style.display = 'none';   
