@@ -1,5 +1,8 @@
 const RED = '🔴';
 const GREEN = '🟢';
+const YELLOW = '🟡';
+let timer = null;
+const timerInterval = 1000;
 
 const bids = {
     0: '1NT-2C',
@@ -12,18 +15,6 @@ const bids = {
     7: '4D-4S'
 };
 
-const answers = {
-    0: 'stayman',
-    1: 'blackwood',
-    2: 'bergen',
-    3: 'jacoby',
-    4: 'michaels',
-    5: 'splinter',
-    6: 'texas',
-    7: 'namyats'
-};
-
-const checkList = [];
 let flag = 0;
 
 for (let i = 0; i < 8; i++) {
@@ -33,19 +24,59 @@ for (let i = 0; i < 8; i++) {
             <div class="stacked">
                 <h2>${bids[i]}</h2>
                 <div>
-                    <input type="text" class="subtext">
+                    <input type="text" class="subtext" data-index=${i}>
                     <span>${RED}</span>
                 </div>
             </div>
         </div>
     `);
-    checkList.push(0);
 }
 
 let textChanged = (e) => {
-    let no = e.target.closest('.puzzleRow').getAttribute('data-index');
-    let bidGuess = e.target.value.toLowerCase();
+    if (flag === 1) return;
+    const inputs = document.querySelectorAll('input[data-index]');
+    const answ = [];
     let lamp = e.target.nextElementSibling;
+    lamp.textContent = YELLOW;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+        inputs.forEach(input => {
+            const index = parseInt(input.dataset.index, 10);
+            answ[index] = input.value.trim().toLowerCase();
+        });
+        fetch('stuff/nuorisonturmio/puzzle.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ msg: answ })
+        }).then (res => res.json())
+        .then(data => {
+            if (data['status'] == 'complete') {
+                inputs.forEach((input, i) => {
+                    lamp = input.nextElementSibling;
+                    lamp.textContent = GREEN;
+                });
+                document.getElementById('puzzleContainer').insertAdjacentHTML('beforeend', data['elms']);
+                let appendix = document.getElementById('appendix');
+                appendix.classList.remove('hidden');
+                appendix.classList.add('revealed');
+                document.getElementById('finalSet').style.visibility = 'visible';
+                flag = 1;
+                console.log('complete');
+            } else {
+                inputs.forEach((input, i) => {
+                    lamp = input.nextElementSibling;
+                    console.log(data.list[i]);
+                    if (!lamp) return;
+                    if (data.list[i] == 1) {
+                        lamp.textContent = GREEN;
+                    } else {
+                        lamp.textContent = RED;
+                    }
+                });
+            }
+        });
+    }, timerInterval);
+    /*
     if (bidGuess == answers[no]) {
         lamp.textContent = GREEN;
         checkList[no] = 1;
@@ -58,9 +89,8 @@ let textChanged = (e) => {
         let appendix = document.getElementById('appendix');
         appendix.classList.remove('hidden');
         appendix.classList.add('revealed');
-    }
-    document.getElementById('finalSet').style.visibility = 'visible';
-    flag = 1;
+    }*/
+    
 };
 
 let subs = document.getElementsByClassName('subtext');
